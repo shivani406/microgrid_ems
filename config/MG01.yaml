@@ -1,0 +1,35 @@
+# Asset registry = single source of truth for simulator, controller AND the 3D scene.
+# Placeholder nameplate values from the plan: replace with real values for a real site.
+site: {id: MG01, name: Campus Microgrid, timezone: Asia/Kolkata, lat: 18.52, lon: 73.86, currency: INR, mode: SIM}
+control: {reserve_soc_pct: 30, grid_charge_target_pct: 85, restore_after_steps: 10}
+buses:
+  - {id: MG01-BUS-AC1, voltage_ll_v: 415, nominal_hz: 50, twin: {pos: [0, 0, 30], model: bus}}
+assets:
+  - {id: MG01-PV-01, type: pv_array, bus: MG01-BUS-AC1, rated_kwp: 80, inverter_kw: 70, gamma_pct_per_c: -0.40, noct_c: 45, soiling_loss_pct: 3, twin: {pos: [-45, 0, 52], model: pv_field, panels: 160}}
+  - {id: MG01-WT-01, type: wind_turbine, bus: MG01-BUS-AC1, rated_kw: 30, cut_in_ms: 3, rated_ms: 12, cut_out_ms: 25, hub_height_m: 24, twin: {pos: [-70, 0, 5], model: wind_turbine}}
+  - {id: MG01-BESS-01, type: battery, bus: MG01-BUS-AC1, energy_kwh: 200, max_charge_kw: 50, max_discharge_kw: 50, soc_min_pct: 20, soc_max_pct: 90, round_trip_eff: 0.90, ramp_kw_per_s: 25, cycle_cost_per_kwh: 3.0, temp_limits_c: [0, 45], twin: {pos: [42, 0, 50], model: bess_container}}
+  - {id: MG01-GRID-PCC, type: grid_tie, bus: MG01-BUS-AC1, transformer_kva: 160, max_import_kw: 100, max_export_kw: 60, freq_window_hz: [49.5, 50.5], volt_window_pu: [0.90, 1.10], tariff: grid_provider_a, twin: {pos: [80, 0, 18], model: substation}}
+  - {id: MG01-LD-H01, type: load, tier: T2, bus: MG01-BUS-AC1, peak_kw: 6, class: residential, twin: {pos: [-16, 0, -6], model: house}}
+  - {id: MG01-LD-H02, type: load, tier: T2, bus: MG01-BUS-AC1, peak_kw: 6, class: residential, twin: {pos: [-4, 0, -6], model: house}}
+  - {id: MG01-LD-H03, type: load, tier: T2, bus: MG01-BUS-AC1, peak_kw: 6, class: residential, twin: {pos: [8, 0, -6], model: house}}
+  - {id: MG01-LD-H04, type: load, tier: T2, bus: MG01-BUS-AC1, peak_kw: 6, class: residential, twin: {pos: [20, 0, -6], model: house}}
+  - {id: MG01-LD-CLINIC, type: load, tier: T0, bus: MG01-BUS-AC1, peak_kw: 12, class: critical, twin: {pos: [-26, 0, 14], model: building}}
+  - {id: MG01-LD-WORKSHOP, type: load, tier: T1, bus: MG01-BUS-AC1, peak_kw: 10, class: commercial, twin: {pos: [0, 0, 12], model: building}}
+  - {id: MG01-LD-HVAC1, type: load, tier: T3, bus: MG01-BUS-AC1, peak_kw: 15, class: hvac, twin: {pos: [26, 0, 14], model: building}}
+topology:   # edges drive power lines + flow animation in the 3D scene
+  - [MG01-PV-01, MG01-BUS-AC1]
+  - [MG01-WT-01, MG01-BUS-AC1]
+  - [MG01-BESS-01, MG01-BUS-AC1]
+  - [MG01-GRID-PCC, MG01-BUS-AC1]
+  - [MG01-BUS-AC1, MG01-LD-H01]
+  - [MG01-BUS-AC1, MG01-LD-H02]
+  - [MG01-BUS-AC1, MG01-LD-H03]
+  - [MG01-BUS-AC1, MG01-LD-H04]
+  - [MG01-BUS-AC1, MG01-LD-CLINIC]
+  - [MG01-BUS-AC1, MG01-LD-WORKSHOP]
+  - [MG01-BUS-AC1, MG01-LD-HVAC1]
+tariffs:
+  grid_provider_a:
+    import: [{from: "06:00", to: "18:00", rate: 7.5}, {from: "18:00", to: "22:00", rate: 10.5}, {from: "22:00", to: "06:00", rate: 5.5}]
+    export_rate: 3.0
+shed_cost_per_kwh: {T0: 1000000, T1: 120, T2: 60, T3: 15}
