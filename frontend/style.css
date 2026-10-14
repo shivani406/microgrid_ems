@@ -7,7 +7,6 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:12px 
 h3{margin:0 0 5px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
 button,select{background:rgba(34,211,238,.1);color:var(--text);border:1px solid var(--border);border-radius:3px;padding:4px 8px;font:inherit;cursor:pointer}
 button:hover{background:rgba(34,211,238,.25)}button.on{background:rgba(34,211,238,.4)}
-#banner{position:fixed;top:0;left:0;right:0;height:18px;text-align:center;background:#F59E0B;color:#1a1000;font-size:10px;font-weight:800;letter-spacing:.1em;line-height:18px;z-index:5}
 #clock{position:fixed;top:26px;left:12px;display:flex;flex-direction:column;gap:2px}#clock b{font-size:15px}#clock small{color:var(--muted);font-size:9px}
 #titlebox{position:fixed;top:24px;left:50%;transform:translateX(-50%);text-align:center}
 h1{margin:0 0 6px;font-size:21px;line-height:1.1;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 0 14px rgba(34,211,238,.5)}
